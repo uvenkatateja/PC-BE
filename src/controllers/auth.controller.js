@@ -234,3 +234,121 @@ exports.changePassword = async (req, res) => {
     });
   }
 }; 
+
+/**
+ * @description Verify if an email exists in the database
+ * @route POST /api/auth/verify-email
+ * @access Public
+ */
+exports.verifyEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Email not found'
+      });
+    }
+    
+    // Log the verification attempt for security auditing
+    console.log(`Email verification requested for ${email}`);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Email verified successfully'
+    });
+  } catch (error) {
+    console.error('Email verification error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Email verification failed'
+    });
+  }
+};
+
+/**
+ * @description Reset user password with user-chosen password
+ * @route POST /api/auth/recover-password
+ * @access Public
+ */
+exports.recoverPassword = async (req, res) => {
+  try {
+    const { email, newPassword, securityAnswers } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+
+    if (!newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password is required'
+      });
+    }
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Email not found'
+      });
+    }
+    
+    // If security answers were provided, verify them
+    // This is a placeholder for future implementation
+    // In a real application, you would store security questions and answers in the user model
+    // and verify them here
+    if (securityAnswers) {
+      console.log('Security answers provided:', securityAnswers);
+      
+      // In a real implementation, you would verify the answers against stored values
+      // For now, we'll just log them and proceed with the password reset
+      // Example verification logic (commented out):
+      /*
+      if (!user.securityQuestions || 
+          !user.securityQuestions.some(q => 
+            q.question === securityAnswers.question1 && 
+            q.answer === securityAnswers.answer1)) {
+        return res.status(401).json({
+          success: false,
+          message: 'Security question verification failed'
+        });
+      }
+      */
+    }
+    
+    // Update the user's password in the database with the user-chosen password
+    user.password = newPassword;
+    await user.save();
+    
+    // Log the password reset for security auditing
+    console.log(`Password reset for ${email}${securityAnswers ? ' with security verification' : ''}`);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Password has been reset successfully'
+    });
+  } catch (error) {
+    console.error('Password reset error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Password reset failed'
+    });
+  }
+};

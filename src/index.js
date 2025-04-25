@@ -13,7 +13,8 @@ const rateLimit = require('express-rate-limit');
 const authRoutes = require('./routes/auth.routes');
 
 // Load environment variables
-dotenv.config();
+// Look for .env file in the parent directory
+dotenv.config({ path: require('path').resolve(__dirname, '../.env') });
 
 // Initialize express app
 const app = express();
