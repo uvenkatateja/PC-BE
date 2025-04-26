@@ -30,7 +30,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "blob:", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com"],
-      connectSrc: ["'self'", "http://localhost:*", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com", "https://*.amazonaws.com", "https://*.onrender.com", "https://pc-be-4lq1.onrender.com"],
+      connectSrc: ["'self'", "http://localhost:*", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com", "https://*.amazonaws.com", "https://*.onrender.com"],
       frameSrc: ["'self'"],
       objectSrc: ["'none'"]
     },
