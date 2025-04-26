@@ -16,6 +16,12 @@ const authRoutes = require('./routes/auth.routes');
 // Look for .env file in the parent directory
 dotenv.config({ path: require('path').resolve(__dirname, '../.env') });
 
+// For debugging - log environment variables
+console.log('Environment variables loaded:');
+console.log('PORT:', process.env.PORT);
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+
 // Initialize express app
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,7 +37,7 @@ app.use(helmet({
 
 // Configure CORS with more detailed settings
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://*.onrender.com', 'https://pc-fe-8jtx.onrender.com'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://*.onrender.com', 'https://pc-fe.onrender.com', 'https://pc-fe-8jtx.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
@@ -96,7 +102,10 @@ app.use((err, req, res, next) => {
 
 // Connect to MongoDB and start server
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log('Connected to MongoDB');
     const server = app.listen(PORT, () => {
@@ -115,5 +124,6 @@ mongoose
   })
   .catch((error) => {
     console.error('Failed to connect to MongoDB:', error.message);
+    console.error('MongoDB connection error:', error);
     process.exit(1);
   }); 
