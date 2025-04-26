@@ -37,7 +37,26 @@ app.use(helmet({
 
 // Configure CORS with more detailed settings
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://*.onrender.com'],
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'http://localhost:3000', 
+      'http://127.0.0.1:3000', 
+      'http://localhost:5173', 
+      'http://127.0.0.1:5173'
+    ];
+    
+    // Check if the origin is allowed or matches a pattern
+    if (allowedOrigins.indexOf(origin) !== -1 || 
+        origin.endsWith('.onrender.com')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
