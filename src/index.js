@@ -10,6 +10,9 @@ const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 
+
+
+
 const authRoutes = require('./routes/auth.routes');
 
 // Load environment variables
