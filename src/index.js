@@ -10,9 +10,6 @@ const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 
-
-
-
 const authRoutes = require('./routes/auth.routes');
 
 // Load environment variables
@@ -33,7 +30,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "blob:", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com"],
-      connectSrc: ["'self'", "http://localhost:*", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com", "https://*.amazonaws.com"],
+      connectSrc: ["'self'", "http://localhost:*", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com", "https://*.amazonaws.com", "https://*.onrender.com", "https://pc-be-4lq1.onrender.com"],
       frameSrc: ["'self'"],
       objectSrc: ["'none'"]
     },
@@ -45,7 +42,7 @@ app.use(helmet({
 
 // Configure CORS with more detailed settings
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'https://*.onrender.com', 'https://pc-fe-8jtx.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
