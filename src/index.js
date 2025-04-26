@@ -23,18 +23,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Enhanced security middleware configuration
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.google-analytics.com", "https://*.googletagmanager.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "blob:", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com"],
-      connectSrc: ["'self'", "http://localhost:*", "https://www.google-analytics.com", "https://*.google-analytics.com", "https://*.googletagmanager.com", "https://*.amazonaws.com", "https://*.onrender.com"],
-      frameSrc: ["'self'"],
-      objectSrc: ["'none'"]
-    },
-  },
+  contentSecurityPolicy: false, // Disable CSP for now to troubleshoot connection issues
   crossOriginEmbedderPolicy: false,
   crossOriginOpenerPolicy: false,
   crossOriginResourcePolicy: false
